@@ -1,0 +1,39 @@
+version: '3.2'
+
+networks:
+  backendTokenWalletsTests:
+
+services:
+  api:
+    image: jincort/backend-token-wallets:test
+    networks:
+      backendTokenWalletsTests:
+    build:
+      context: ./
+      dockerfile: Dockerfile.test
+    env_file:
+      - .env.test
+    command: >
+      sh -c '
+        npm run test:cover
+      '
+    volumes:
+      - ./src/:/usr/src/app/src:ro
+      - ./test/:/usr/src/app/test:ro
+    links:
+      - mongo
+      - redis
+
+  redis:
+    image: jincort/backend-redis:latest
+    networks:
+      backendTokenWalletsTests:
+    tmpfs:
+      - /data
+
+  mongo:
+    image: jincort/backend-mongodb:production
+    networks:
+      backendTokenWalletsTests:
+    tmpfs:
+      - /data/db

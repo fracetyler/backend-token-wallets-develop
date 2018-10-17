@@ -1,0 +1,7 @@
+.git
+npm-debug.log
+coverage
+.nyc_output
+.env
+storage
+reset-payment-password
